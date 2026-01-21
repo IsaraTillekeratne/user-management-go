@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"example.com/user-management/internal/model"
+	"example.com/user-management/internal/dto"
+	"example.com/user-management/internal/mapper"
 	"example.com/user-management/internal/store"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
@@ -24,21 +25,22 @@ func NewUserHandler(store *store.UserStore) *UserHandler {
 }
 
 func (handler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var user model.User
+	var req dto.CreateUserRequest
 
 	// read the request body and decode it as user
-	err := json.NewDecoder(r.Body).Decode(&user)
+	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		http.Error(w, "Invalid Request Body!", http.StatusBadRequest)
 		return
 	}
 
-	err = validate.Struct(user)
+	err = validate.Struct(req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
+	user := mapper.CreateUserRequestToModel(req)
 	createdUser, err := handler.store.CreateUser(user)
 
 	if err != nil {
@@ -117,29 +119,37 @@ func (handler *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user model.User
+	var req dto.UpdateUserRequest
 
-	err = json.NewDecoder(r.Body).Decode(&user)
+	err = json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		http.Error(w, "Invalid Request Body!", http.StatusBadRequest)
 		return
 	}
 
-	err = validate.Struct(user)
+	err = validate.Struct(req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	updatedUser, ok, err := handler.store.UpdateUser(user, parsedId)
+	user, ok, err := handler.store.GetUserById(parsedId)
 
 	if err != nil {
-		http.Error(w, "Failed to Update User!", http.StatusInternalServerError)
+		http.Error(w, "Failed to Retrieve User by Id!", http.StatusInternalServerError)
 		return
 	}
 
 	if !ok {
 		http.Error(w, "User Not Found!", http.StatusNotFound)
+		return
+	}
+
+	mapper.ApplyUpdateUserRequest(&user, req)
+	updatedUser, _, err := handler.store.UpdateUser(user, parsedId)
+
+	if err != nil {
+		http.Error(w, "Failed to Update User!", http.StatusInternalServerError)
 		return
 	}
 

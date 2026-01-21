@@ -22,6 +22,10 @@ func NewUserStore(dbConn *sql.DB) *UserStore {
 
 func (store *UserStore) CreateUser(user model.User) (model.User, error) {
 
+	if user.Status == "" {
+		user.Status = model.StatusActive
+	}
+
 	createdUser, err := store.queries.CreateUser(context.Background(),
 		db.CreateUserParams{
 			FirstName: user.FirstName,
@@ -71,6 +75,7 @@ func (store *UserStore) GetUserById(userId uuid.UUID) (model.User, bool, error) 
 }
 
 func (store *UserStore) UpdateUser(user model.User, userId uuid.UUID) (model.User, bool, error) {
+
 	dbUser, err := store.queries.UpdateUser(
 		context.Background(),
 		db.UpdateUserParams{
