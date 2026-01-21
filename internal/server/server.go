@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	"example.com/user-management/internal/db"
 	"example.com/user-management/internal/handler"
 	"example.com/user-management/internal/store"
 	"github.com/go-chi/chi/v5"
@@ -16,7 +17,8 @@ func New() http.Handler {
 	r.Use(middleware.Recoverer)
 
 	// initialize a user store & user handler
-	userStore := store.NewUserStore()
+	dbConn := db.NewPostgres()
+	userStore := store.NewUserStore(dbConn)
 	userHandler := handler.NewUserHandler(userStore)
 
 	r.Route("/users", func(r chi.Router) {

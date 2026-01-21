@@ -4,7 +4,7 @@ Content-Type: application/json
 {
   "firstName": "a",
   "lastName": "def",
-  "email": "abc@gmail.com",
+  "email": "abcde@gmail.com",
   "phone": "+94777648683",
   "age": 27,
   "status": "Active"
@@ -14,14 +14,14 @@ Content-Type: application/json
 GET http://localhost:8080/users
 
 ###
-GET http://localhost:8080/users/059874e7-8e86-4292-9919-a7ec3705d5e9
+GET http://localhost:8080/users/a55e1a8c-a1da-41fc-90c3-37c747893b1c
 
 ###
-PUT http://localhost:8080/users/059874e7-8e86-4292-9919-a7ec3705d5e9
+PUT http://localhost:8080/users/a55e1a8c-a1da-41fc-90c3-37c747893b1c
 Content-Type: application/json
 
 {
-  "firstName": "aqw",
+  "firstName": "pqrr",
   "lastName": "anh",
   "email": "qqqq@gmail.com",
   "phone": "0777648683",
@@ -31,4 +31,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8080/users/059874e7-8e86-4292-9919-a7ec3705d5e9
+DELETE http://localhost:8080/users/a55e1a8c-a1da-41fc-90c3-37c747893b1c

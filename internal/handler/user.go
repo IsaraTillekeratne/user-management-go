@@ -39,7 +39,12 @@ func (handler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createdUser := handler.store.CreateUser(user)
+	createdUser, err := handler.store.CreateUser(user)
+
+	if err != nil {
+		http.Error(w, "Failed to Create User!", http.StatusInternalServerError)
+		return
+	}
 
 	response := map[string]interface{}{
 		"message": "User created successfully!",
@@ -57,10 +62,16 @@ func (handler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (handler *UserHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
-	allUsers := handler.store.GetAllUsers()
+	allUsers, err := handler.store.GetAllUsers()
+
+	if err != nil {
+		http.Error(w, "Failed to Retrieve Users!", http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	err := json.NewEncoder(w).Encode(allUsers)
+	err = json.NewEncoder(w).Encode(allUsers)
 
 	if err != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
@@ -75,7 +86,13 @@ func (handler *UserHandler) GetUserById(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, "Invalid User Id!", http.StatusBadRequest)
 		return
 	}
-	user, ok := handler.store.GetUserById(parsedId)
+	user, ok, err := handler.store.GetUserById(parsedId)
+
+	if err != nil {
+		http.Error(w, "Failed to Retrieve User by Id!", http.StatusInternalServerError)
+		return
+	}
+
 	if !ok {
 		http.Error(w, "User Not Found!", http.StatusNotFound)
 		return
@@ -109,7 +126,13 @@ func (handler *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	updatedUser, ok := handler.store.UpdateUser(user, parsedId)
+	updatedUser, ok, err := handler.store.UpdateUser(user, parsedId)
+
+	if err != nil {
+		http.Error(w, "Failed to Update User!", http.StatusInternalServerError)
+		return
+	}
+
 	if !ok {
 		http.Error(w, "User Not Found!", http.StatusNotFound)
 		return
@@ -138,7 +161,13 @@ func (handler *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ok := handler.store.DeleteUser(parsedId)
+	ok, err := handler.store.DeleteUser(parsedId)
+
+	if err != nil {
+		http.Error(w, "Failed to Delete User!", http.StatusInternalServerError)
+		return
+	}
+
 	if !ok {
 		http.Error(w, "User Not Found!", http.StatusNotFound)
 		return
