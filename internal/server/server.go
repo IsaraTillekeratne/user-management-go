@@ -25,7 +25,7 @@ func New() http.Handler {
 		r.Post("/", userHandler.CreateUser)
 		r.Get("/", userHandler.GetAllUsers)
 		r.Get("/{id}", userHandler.GetUserById)
-		r.Put("/{id}", userHandler.UpdateUser)
+		r.Patch("/{id}", userHandler.UpdateUser)
 		r.Delete("/{id}", userHandler.DeleteUser)
 	})
 

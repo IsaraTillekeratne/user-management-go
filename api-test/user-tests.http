@@ -17,7 +17,7 @@ GET http://localhost:8080/users
 GET http://localhost:8080/users/a55e1a8c-a1da-41fc-90c3-37c747893b1c
 
 ###
-PUT http://localhost:8080/users/a55e1a8c-a1da-41fc-90c3-37c747893b1c
+PATCH http://localhost:8080/users/a55e1a8c-a1da-41fc-90c3-37c747893b1c
 Content-Type: application/json
 
 {
