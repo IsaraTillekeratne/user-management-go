@@ -109,7 +109,6 @@ func (handler *UserHandler) GetUserById(w http.ResponseWriter, r *http.Request) 
 
 }
 
-// UpdateUser TODO: add validator for update request
 func (handler *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "id")
 	parsedId, err := uuid.Parse(userId)
@@ -123,6 +122,12 @@ func (handler *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	err = json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, "Invalid Request Body!", http.StatusBadRequest)
+		return
+	}
+
+	err = validate.Struct(user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
