@@ -15,10 +15,10 @@ import (
 var validate = validator.New()
 
 type UserHandler struct {
-	store *store.UserStore
+	store store.UserStoreInterface
 }
 
-func NewUserHandler(store *store.UserStore) *UserHandler {
+func NewUserHandler(store store.UserStoreInterface) *UserHandler {
 	return &UserHandler{
 		store: store,
 	}

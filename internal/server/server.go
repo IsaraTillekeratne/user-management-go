@@ -16,7 +16,6 @@ func New() http.Handler {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	// initialize a user store & user handler
 	dbConn := db.NewPostgres()
 	userStore := store.NewUserStore(dbConn)
 	userHandler := handler.NewUserHandler(userStore)

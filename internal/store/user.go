@@ -14,6 +14,14 @@ type UserStore struct {
 	queries *db.Queries
 }
 
+type UserStoreInterface interface {
+	CreateUser(user model.User) (model.User, error)
+	GetAllUsers() ([]model.User, error)
+	GetUserById(userId uuid.UUID) (model.User, bool, error)
+	UpdateUser(user model.User, userId uuid.UUID) (model.User, bool, error)
+	DeleteUser(userId uuid.UUID) (bool, error)
+}
+
 func NewUserStore(dbConn *sql.DB) *UserStore {
 	return &UserStore{
 		queries: db.New(dbConn),
