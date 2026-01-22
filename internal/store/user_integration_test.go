@@ -40,7 +40,11 @@ func TestMain(m *testing.M) {
 		log.Fatal(err)
 	}
 
-	defer postgres.Terminate(ctx)
+	defer func() {
+		if err := postgres.Terminate(ctx); err != nil {
+			log.Printf("failed to terminate postgres container: %v", err)
+		}
+	}()
 
 	host, err := postgres.Host(ctx)
 	if err != nil {

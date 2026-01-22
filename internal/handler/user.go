@@ -63,7 +63,7 @@ func (handler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (handler *UserHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
+func (handler *UserHandler) GetAllUsers(w http.ResponseWriter, _ *http.Request) {
 	allUsers, err := handler.store.GetAllUsers()
 
 	if err != nil {
