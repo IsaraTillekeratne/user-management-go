@@ -112,7 +112,7 @@ func (store *UserStore) UpdateUser(user model.User, userId uuid.UUID) (model.Use
 }
 
 func (store *UserStore) DeleteUser(userId uuid.UUID) (bool, error) {
-	err := store.queries.DeleteUser(context.Background(), userId)
+	_, err := store.queries.DeleteUser(context.Background(), userId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return false, nil
