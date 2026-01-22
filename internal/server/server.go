@@ -11,16 +11,16 @@ import (
 )
 
 func New() http.Handler {
-	r := chi.NewRouter()
+	router := chi.NewRouter()
 
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
+	router.Use(middleware.Logger)
+	router.Use(middleware.Recoverer)
 
 	dbConn := db.NewPostgres()
 	userStore := store.NewUserStore(dbConn)
 	userHandler := handler.NewUserHandler(userStore)
 
-	r.Route("/users", func(r chi.Router) {
+	router.Route("/users", func(r chi.Router) {
 		r.Post("/", userHandler.CreateUser)
 		r.Get("/", userHandler.GetAllUsers)
 		r.Get("/{id}", userHandler.GetUserById)
@@ -28,5 +28,5 @@ func New() http.Handler {
 		r.Delete("/{id}", userHandler.DeleteUser)
 	})
 
-	return r
+	return router
 }
