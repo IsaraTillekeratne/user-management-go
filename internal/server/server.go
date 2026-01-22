@@ -1,3 +1,7 @@
+// @title User Management API
+// @version 1.0
+// @description REST API for User Management
+
 package server
 
 import (
