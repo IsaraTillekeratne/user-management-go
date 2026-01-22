@@ -3,11 +3,13 @@ package server
 import (
 	"net/http"
 
+	_ "example.com/user-management/docs"
 	"example.com/user-management/internal/db"
 	"example.com/user-management/internal/handler"
 	"example.com/user-management/internal/store"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 func New() http.Handler {
@@ -27,6 +29,8 @@ func New() http.Handler {
 		r.Patch("/{id}", userHandler.UpdateUser)
 		r.Delete("/{id}", userHandler.DeleteUser)
 	})
+
+	router.Get("/doc/*", httpSwagger.WrapHandler)
 
 	return router
 }

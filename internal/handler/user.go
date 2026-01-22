@@ -24,6 +24,17 @@ func NewUserHandler(store store.UserStoreInterface) *UserHandler {
 	}
 }
 
+// CreateUser godoc
+// @Summary Create a new user
+// @Description Create a new user with the input payload
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body dto.CreateUserRequest true "User payload"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400 {string} string "Invalid Request Body"
+// @Failure 500 {string} string "Failed to Create User"
+// @Router /users [post]
 func (handler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateUserRequest
 
@@ -63,6 +74,14 @@ func (handler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetAllUsers godoc
+// @Summary Retrieve all users
+// @Description Get a list of all users
+// @Tags Users
+// @Produce json
+// @Success 200 {array} model.User
+// @Failure 500 {string} string "Failed to Retrieve Users"
+// @Router /users [get]
 func (handler *UserHandler) GetAllUsers(w http.ResponseWriter, _ *http.Request) {
 	allUsers, err := handler.store.GetAllUsers()
 
@@ -81,6 +100,17 @@ func (handler *UserHandler) GetAllUsers(w http.ResponseWriter, _ *http.Request) 
 	}
 }
 
+// GetUserById godoc
+// @Summary Get user by ID
+// @Description Retrieve a user by their UUID
+// @Tags Users
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {object} model.User
+// @Failure 400 {string} string "Invalid User Id"
+// @Failure 404 {string} string "User Not Found"
+// @Failure 500 {string} string "Failed to Retrieve User"
+// @Router /users/{id} [get]
 func (handler *UserHandler) GetUserById(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "id")
 	parsedId, err := uuid.Parse(userId)
@@ -111,6 +141,19 @@ func (handler *UserHandler) GetUserById(w http.ResponseWriter, r *http.Request) 
 
 }
 
+// UpdateUser godoc
+// @Summary Update a user
+// @Description Update a user's information by UUID
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Param user body dto.UpdateUserRequest true "User update payload"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 {string} string "Invalid Request Body or User Id"
+// @Failure 404 {string} string "User Not Found"
+// @Failure 500 {string} string "Failed to Update User"
+// @Router /users/{id} [patch]
 func (handler *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "id")
 	parsedId, err := uuid.Parse(userId)
@@ -168,6 +211,17 @@ func (handler *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteUser godoc
+// @Summary Delete a user
+// @Description Delete a user by UUID
+// @Tags Users
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {object} map[string]string
+// @Failure 400 {string} string "Invalid User Id"
+// @Failure 404 {string} string "User Not Found"
+// @Failure 500 {string} string "Failed to Delete User"
+// @Router /users/{id} [delete]
 func (handler *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "id")
 	parsedId, err := uuid.Parse(userId)
