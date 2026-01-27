@@ -1,0 +1,43 @@
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "firstName": "hellort",
+  "lastName": "name",
+  "email": "helloort@gmail.com",
+  "phone": "+94777648683",
+  "age": 27,
+  "status": "Active"
+}
+
+###
+GET http://localhost:8080/users
+
+###
+GET http://localhost:8080/users/a55e1a8c-a1da-41fc-90c3-37c747893b1c
+
+###
+PATCH http://localhost:8080/users/3095f5f4-7795-4275-a72a-99d9c017ad77
+Content-Type: application/json
+
+{
+  "firstName": "helloman",
+  "lastName": "anh",
+  "email": "bbb@gmail.com",
+  "phone": "+94777648683",
+  "age": 27,
+  "status": "Inactive"
+}
+
+###
+PATCH http://localhost:8080/users/3095f5f4-7795-4275-a72a-99d9c017ad77
+Content-Type: application/json
+
+{
+  "firstName": "abcaaaaa",
+  "lastName": "deffffff"
+}
+
+###
+
+DELETE http://localhost:8080/users/3095f5f4-7795-4275-a72a-99d9c017ad77
