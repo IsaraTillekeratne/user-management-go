@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: user-management-db
+    environment:
+      POSTGRES_USER: useradmin
+      POSTGRES_PASSWORD: userpassword
+      POSTGRES_DB: userdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+volumes:
+  postgres_data:
