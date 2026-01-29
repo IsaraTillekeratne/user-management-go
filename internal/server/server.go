@@ -5,6 +5,7 @@
 package server
 
 import (
+	"log"
 	"net/http"
 
 	_ "example.com/user-management/docs"
@@ -22,7 +23,11 @@ func New() http.Handler {
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
 
-	dbConn := db.NewPostgres()
+	dbConn, err := db.NewPostgres()
+	if err != nil {
+		log.Fatalf("failed to connect to database: %v", err)
+	}
+
 	userStore := store.NewUserStore(dbConn)
 	userHandler := handler.NewUserHandler(userStore)
 
